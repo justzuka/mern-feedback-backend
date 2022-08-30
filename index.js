@@ -37,7 +37,9 @@ app.get("/users", (req, res) => {
 		}
 	});
 });
-
+app.get("/", (req, res) => {
+	res.send(" hi ");
+});
 app.post("/registerUser", async (req, res) => {
 	console.log("in register");
 	try {
