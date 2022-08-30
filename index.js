@@ -14,7 +14,7 @@ const SECRET = "dfghjakcgavjbjk1235!@)(#&!(#";
 const CONNECTION_URL =
 	"mongodb+srv://justzuka:zukax326@cluster0.dbvdaqw.mongodb.net/?retryWrites=true&w=majority";
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
-
+//whahaat
 app.use(cors());
 mongoose
 	.connect(CONNECTION_URL, {
