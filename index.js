@@ -129,7 +129,7 @@ app.post("/feedbacks", async (req, res) => {
 		const page = parseInt(req.query.page || "0");
 		const total = await FeedbackModel.countDocuments(filterObj);
 		const feedbacks = await FeedbackModel.find(filterObj)
-			.sort("createdAt", "asc")
+			.sort([["createdAt", "descending"]])
 			.limit(PAGE_SIZE)
 			.skip(PAGE_SIZE * page);
 		res.json({
