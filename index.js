@@ -7,23 +7,21 @@ const FeedbackModel = require("./models/Feedbacks");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 
-require("dotenv").config();
-const PORT = 3001;
+const dotenv = require("dotenv");
+dotenv.config();
+
 const jwt = require("jsonwebtoken");
-const SECRET = "dfghjakcgavjbjk1235!@)(#&!(#";
-const CONNECTION_URL =
-	"mongodb+srv://justzuka:zukax326@cluster0.dbvdaqw.mongodb.net/?retryWrites=true&w=majority";
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 //whahaat
 app.use(cors());
 mongoose
-	.connect(CONNECTION_URL, {
+	.connect(process.env.CONNECTION_URL, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
 	.then(() =>
 		app.listen(process.env.PORT, () =>
-			console.log(`Server running on port: ${PORT}`)
+			console.log(`Server running on port: ${process.env.PORT}`)
 		)
 	)
 	.catch((error) => console.log(error.message));
@@ -82,7 +80,7 @@ app.post("/loginUser", async (req, res) => {
 						name: us.name,
 						email: us.email,
 					},
-					SECRET
+					process.env.SECRET
 				);
 
 				return res.json({
@@ -104,7 +102,7 @@ app.post("/getUserName", async (req, res) => {
 	const token = req.body.token;
 
 	try {
-		const decoded = jwt.verify(token, SECRET);
+		const decoded = jwt.verify(token, process.env.SECRET);
 		const email = decoded.email;
 		const user = await UserModel.findOne({ email: email });
 
@@ -118,7 +116,7 @@ app.post("/feedbacks", async (req, res) => {
 	const token = req.body.token;
 
 	try {
-		const decoded = jwt.verify(token, SECRET);
+		const decoded = jwt.verify(token, process.env.SECRET);
 		let filterObj = {};
 
 		if (req.body.tag === "All" || req.body.tag === undefined) {
@@ -148,7 +146,7 @@ app.post("/addfeedback", async (req, res) => {
 	const token = req.body.token;
 
 	try {
-		const decoded = jwt.verify(token, SECRET);
+		const decoded = jwt.verify(token, process.env.SECRET);
 		const feedback = new FeedbackModel({
 			head: req.body.header,
 			info: req.body.info,
@@ -200,7 +198,7 @@ app.post("/unlike", async (req, res) => {
 	const token = req.body.token;
 
 	try {
-		const decoded = jwt.verify(token, SECRET);
+		const decoded = jwt.verify(token, process.env.SECRET);
 		const email = decoded.email;
 		const user = await UserModel.findOne({ email: email });
 		const userId = user._id;
@@ -230,7 +228,7 @@ app.post("/addcomment", async (req, res) => {
 	const token = req.body.token;
 
 	try {
-		const decoded = jwt.verify(token, SECRET);
+		const decoded = jwt.verify(token, process.env.SECRET);
 		const name = decoded.name;
 		const info = req.body.info;
 		const feedbackId = req.body._id;
@@ -264,7 +262,7 @@ app.post("/addcomment", async (req, res) => {
 app.post("/feedback", async (req, res) => {
 	const token = req.body.token;
 	try {
-		const decoded = jwt.verify(token, SECRET);
+		const decoded = jwt.verify(token, process.env.SECRET);
 		const feedbackId = req.body._id;
 
 		const feedback = await FeedbackModel.findOne({ _id: feedbackId });
