@@ -13,6 +13,7 @@ dotenv.config();
 const jwt = require("jsonwebtoken");
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 //whahaat
+
 app.use(cors());
 mongoose
 	.connect(process.env.CONNECTION_URL, {
@@ -167,9 +168,8 @@ app.post("/addfeedback", async (req, res) => {
 
 app.post("/like", async (req, res) => {
 	const token = req.body.token;
-
 	try {
-		const decoded = jwt.verify(token, SECRET);
+		const decoded = jwt.verify(token, process.env.SECRET);
 		const email = decoded.email;
 		const user = await UserModel.findOne({ email: email });
 		const userId = user._id;
@@ -191,6 +191,7 @@ app.post("/like", async (req, res) => {
 			}
 		});
 	} catch (error) {
+		console.log(error);
 		res.json({ status: "error", message: "invalid token" });
 	}
 });
